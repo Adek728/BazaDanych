@@ -1,0 +1,406 @@
+drop table Basen;
+drop table Klub;
+drop table Tor;
+drop table Trening;
+drop table Wynajem;
+drop table Zawodnik;
+-- tables
+-- Table: Basen
+CREATE TABLE Basen (
+    IdBasenu integer  NOT NULL,
+    Adres varchar(20)  NOT NULL,
+    IloscTorow integer  NOT NULL,
+    CONSTRAINT Basen_pk PRIMARY KEY (IdBasenu)
+) ;
+
+-- Table: Klub
+CREATE TABLE Klub (
+    IdKlubu integer  NOT NULL,
+    Nazwa varchar(30)  NOT NULL,
+    CONSTRAINT Klub_pk PRIMARY KEY (IdKlubu)
+) ;
+-- Table: Tor
+CREATE TABLE Tor (
+    IdToru integer  NOT NULL,
+    IdBasenu integer  NOT NULL,
+    Cena numeric(2,0)  NOT NULL,
+    Dlugosc integer  NOT NULL,
+    IloscOsob integer  NOT NULL,
+    CONSTRAINT Tor_pk PRIMARY KEY (IdToru)
+) ;
+
+-- Table: Trening
+CREATE TABLE Trening (
+    IdToru integer  NOT NULL,
+    DataOd date  NOT NULL,
+    IdZawodnika integer  NOT NULL,
+    CONSTRAINT Trening_pk PRIMARY KEY (IdToru,DataOd,IdZawodnika)
+) ;
+
+-- Table: Wynajem
+CREATE TABLE Wynajem (
+    IdToru integer  NOT NULL,
+    IdKlubu integer  NOT NULL,
+    DataOd date  NOT NULL,
+	DataDo date NOT NULL,
+    CONSTRAINT Wynajem_pk PRIMARY KEY (IdToru,DataOd)
+) ;
+
+-- Table: Zawodnik
+CREATE TABLE Zawodnik (
+    IdZawodnika integer  NOT NULL,
+    Imie varchar(20)  NOT NULL,
+    Nazwisko varchar(30)  NOT NULL,
+    Plec varchar(15)  NOT NULL,
+    IdKlubu integer  NOT NULL,
+    CONSTRAINT Zawodnik_pk PRIMARY KEY (IdZawodnika)
+) ;
+
+-- foreign keys
+-- Reference: Table_8_Wynajem (table: Trening)
+ALTER TABLE Trening ADD CONSTRAINT Table_8_Wynajem
+    FOREIGN KEY (IdToru,DataOd)
+    REFERENCES Wynajem (IdToru,DataOd);
+
+-- Reference: Table_8_Zawodnik (table: Trening)
+ALTER TABLE Trening ADD CONSTRAINT Table_8_Zawodnik
+    FOREIGN KEY (IdZawodnika)
+    REFERENCES Zawodnik (IdZawodnika);
+
+-- Reference: Tor_Basen (table: Tor)
+ALTER TABLE Tor ADD CONSTRAINT Tor_Basen
+    FOREIGN KEY (IdBasenu)
+    REFERENCES Basen (IdBasenu);
+
+-- Reference: Wynajem_Klub (table: Wynajem)
+ALTER TABLE Wynajem ADD CONSTRAINT Wynajem_Klub
+    FOREIGN KEY (IdKlubu)
+    REFERENCES Klub (IdKlubu);
+
+-- Reference: Wynajem_Tor (table: Wynajem)
+ALTER TABLE Wynajem ADD CONSTRAINT Wynajem_Tor
+    FOREIGN KEY (IdToru)
+    REFERENCES Tor (IdToru);
+
+-- Reference: Zawodnik_Klub (table: Zawodnik)
+ALTER TABLE Zawodnik ADD CONSTRAINT Zawodnik_Klub
+    FOREIGN KEY (IdKlubu)
+    REFERENCES Klub (IdKlubu);
+
+-- End of file.
+
+INSERT INTO Basen (IdBasenu, Adres, IloscTorow)
+VALUES (1, 'Marymoncka', 3);
+
+INSERT INTO Basen (IdBasenu, Adres, IloscTorow)
+VALUES (2, 'Brukowa', 3);
+
+INSERT INTO Tor (IdToru, IdBasenu, Cena, Dlugosc, IloscOsob)
+VALUES (1, 1, 20, 50, 2);
+
+INSERT INTO Tor (IdToru, IdBasenu, Cena, Dlugosc, IloscOsob)
+VALUES (2, 1, 20, 50, 1);
+
+INSERT INTO Tor (IdToru, IdBasenu, Cena, Dlugosc, IloscOsob)
+VALUES (3, 1, 20, 50, 1);
+
+INSERT INTO Tor (IdToru, IdBasenu, Cena, Dlugosc, IloscOsob)
+VALUES (4, 2, 15, 25, 1);
+
+INSERT INTO Tor (IdToru, IdBasenu, Cena, Dlugosc, IloscOsob)
+VALUES (5, 2, 15, 25, 3);
+
+INSERT INTO Tor (IdToru, IdBasenu, Cena, Dlugosc, IloscOsob)
+VALUES (6, 2, 15, 25, 2);
+
+INSERT INTO Klub (IdKlubu, Nazwa)
+VALUES (1, 'Orka');
+
+INSERT INTO Klub (IdKlubu, Nazwa)
+VALUES (2, 'G8');
+
+INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu)
+VALUES (1, 'Adam', 'Mikolajczak', 'Mezczyzna', 1);
+
+INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu)
+VALUES (2, 'Mikolaj', 'Kozakiewicz', 'Mezczyzna', 1);
+
+INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu)
+VALUES (3, 'Adrianna', 'Kowalska', 'Kobieta', 1);
+
+INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu)
+VALUES (4, 'Marcin', 'Frankiewicz', 'Mezczyzna', 1);
+
+INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu)
+VALUES (5, 'Karolina', 'Miecznikowska', 'Kobieta', 2);
+
+INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu)
+VALUES (6, 'Michal', 'Kruk', 'Mezczyzna', 2);
+
+INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu)
+VALUES (7, 'Michal', 'Zajac', 'Mezczyzna', 2);
+
+INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu)
+VALUES (8, 'Zuzanna', 'Kopytko', 'Kobieta', 2);
+
+INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu)
+VALUES (9, 'Adrian', 'Polak', 'Mezczyzna', 2);
+
+INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu)
+VALUES (10, 'Magda', 'Buzycka', 'Kobieta', 2);
+
+
+INSERT INTO Wynajem (IdToru, IdKlubu, DataOd, DataDo)
+VALUES (1,1, '2016-05-04', '2016-05-04');
+
+INSERT INTO Wynajem (IdToru, IdKlubu, DataOd, DataDo)
+VALUES (2,1, '2016-05-04', '2016-05-04');
+
+INSERT INTO Wynajem (IdToru, IdKlubu, DataOd, DataDo)
+VALUES (3,1, '2016-05-04', '2016-05-04');
+
+INSERT INTO Wynajem (IdToru, IdKlubu, DataOd, DataDo)
+VALUES (4,2, '2016-05-04', '2016-05-04');
+
+INSERT INTO Wynajem (IdToru, IdKlubu, DataOd, DataDo)
+VALUES (5,2, '2016-05-04', '2016-05-04');
+
+INSERT INTO Wynajem (IdToru, IdKlubu, DataOd, DataDo)
+VALUES (6,2, '2016-05-04', '2016-05-04');
+
+
+INSERT INTO Trening (IdToru, DataOd, IdZawodnika)
+VALUES (1, '2016-05-04', 1);
+
+INSERT INTO Trening (IdToru, DataOd, IdZawodnika)
+VALUES (1, '2016-05-04', 2);
+
+INSERT INTO Trening (IdToru, DataOd, IdZawodnika)
+VALUES (2, '2016-05-04', 3);
+
+INSERT INTO Trening (IdToru, DataOd, IdZawodnika)
+VALUES (3, '2016-05-04', 4);
+
+INSERT INTO Trening (IdToru, DataOd, IdZawodnika)
+VALUES (4, '2016-05-04', 5);
+
+INSERT INTO Trening (IdToru, DataOd, IdZawodnika)
+VALUES (5, '2016-05-04', 6);
+
+INSERT INTO Trening (IdToru, DataOd, IdZawodnika)
+VALUES (5, '2016-05-04', 7);
+
+INSERT INTO Trening (IdToru, DataOd, IdZawodnika)
+VALUES (5, '2016-05-04', 8);
+
+INSERT INTO Trening (IdToru, DataOd, IdZawodnika)
+VALUES (6, '2016-05-04', 9);
+
+INSERT INTO Trening (IdToru, DataOd, IdZawodnika)
+VALUES (6, '2016-05-04', 10);
+
+
+--1. Wyświetl adres basenu, cene toru, oraz maxymalna ilość osób na torze 50 metrowym. Wyświetl maxymalna ilość osób na torze 50 metrowym z klubu 'ORKA'
+SELECT basen.adres, tor.cena, MAX(IloscOsob)
+FROM Tor
+inner join Wynajem on tor.idtoru=wynajem.idtoru
+inner join klub on klub.idklubu=wynajem.idklubu
+inner join basen on basen.idbasenu = tor.idbasenu
+WHERE klub.nazwa in (select nazwa from klub where nazwa='ORKA')
+AND tor.idtoru in (select idtoru from tor where dlugosc = 50)
+group by basen.adres, tor.cena;
+
+--2. Wyswietl IdToru i Adres basenu na ktorym sa 2 osoby, które należa do klubu 'ORKA'
+SELECT tor.IdToru, basen.Adres, iloscOsob
+FROM Tor
+INNER JOIN Basen ON Tor.IdBasenu = Basen.IdBasenu
+INNER JOIN WYNAJEM ON wynajem.idtoru = tor.idtoru
+inner join klub on klub.idklubu = wynajem.idklubu
+WHERE tor.IdToru in (
+					Select tor.IdToru 
+					FROM Tor
+					INNER JOIN WYNAJEM ON wynajem.idtoru = tor.idtoru
+					inner join klub on klub.idklubu = wynajem.idklubu
+					WHERE IloscOsob = 2
+					AND klub.nazwa in (
+										select nazwa from klub where nazwa='ORKA'
+										));
+
+-- 3. wybrac miesiac w konkretnym roku , w którym konczylo sie najwiecej wynajmów
+SELECT MONTH (P.datado) MM,  YEAR (P.datado) YY, COUNT(*)
+FROM Wynajem p
+GROUP BY MONTH (P.datado), YEAR (P.datado)
+HAVING COUNT(*) >= ALL(
+	SELECT COUNT(*)
+	FROM Wynajem
+	WHERE  YEAR (wynajem.datado)= YEAR (P.datado)
+	GROUP BY MONTH (wynajem.datado));
+
+--4. Wyświetl nazwe klubu który płaci za wynajem więcej niż 50 oraz jeden z zawodników to MARCIN
+select klub.nazwa, SUM(tor.cena)
+from klub
+inner join wynajem on wynajem.idklubu=klub.IdKlubu
+inner join tor on tor.idtoru=wynajem.idtoru
+where klub.nazwa in (select klub.nazwa from klub inner join zawodnik on zawodnik.idklubu = klub.idklubu where Zawodnik.imie = 'MARCIN')
+GROUP BY klub.nazwa
+having sum(tor.cena) > 50;
+
+-- 5. wypisac osoby, które nie plywaly na torach
+SELECT z.idzawodnika, nazwisko
+FROM zawodnik z
+WHERE NOT EXISTS ( 
+	SELECT *
+	FROM Trening
+	WHERE idzawodnika = z.idzawodnika); 
+
+-- 6. Dla kazdego Basenu  wypisac Tor, na którym pływa najwięcej osób
+select distinct e.adres, iloscOsob
+from Basen e
+inner join tor on e.idbasenu = tor.idbasenu
+where iloscOsob >= all(select IloscOsob from tor
+where idbasenu = e.idbasenu);
+
+--1 TSQL
+--wyświetlić ilość osób w klubie 'ORKA' oraz 'G8', jeżeli ilość osób w klubie jest mniejsza od 5 to dodać jednego zawodnika 'Bogdana' 'Maniaka' do tego klubu
+DECLARE @ile int, @klub varchar(30)
+set @klub = 'ORKA'
+select @ile = count(zawodnik.idzawodnika) from klub inner join zawodnik on klub.idklubu = zawodnik.idklubu where nazwa = @klub;
+print 'W klubie ' + @klub + ' jest ' + str(@ile) + ' zawodnikow'
+if @ile < 5
+	begin
+		INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu) values ((select count (*) from zawodnik) + 1, 'Bogdan', 'Maniak', 'Mezczyzna', (select idklubu from klub where nazwa=@klub))
+		print 'Dodano zawodnika do klubu ' + @klub
+		end
+	else
+		begin
+		print 'W klubie jest więcej niż 5 zawodnikow'
+end
+set @klub = 'G8'
+select @ile = count(zawodnik.idzawodnika) from klub inner join zawodnik on klub.idklubu = zawodnik.idklubu where nazwa = @klub;
+print 'W klubie ' + @klub + ' jest ' + str(@ile) + ' zawodnikow'
+if @ile < 5
+	begin
+		INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu) values ((select count (*) from zawodnik) + 1, 'Bogdan', 'Maniak', 'Mezczyzna', (select idklubu from klub where nazwa=@klub))
+		print 'Dodano zawodnika do klubu ' + @klub
+		end
+	else
+		begin
+		print 'W klubie jest więcej niż 5 zawodnikow'
+end
+
+--2 TSQL
+--Na torze 25 metrowym musi pływać 2 zawodników z klubu ORKA, torów na basenie jest 3 (idtoru odpowiednio to (idtoru -2, idtoru -1, idtoru)),
+--wyświetl ilość zawodników na torze oraz usuń zawodnika z toru jeżeli ilość przekracza 2
+--lub dodaj zawodnika 'Mikołaja' 'Koziatka' jeżeli ilość jest mniejsza niż 2 (na torze już jest minimum 1 zawodnik)
+DECLARE @ilu int, @tor int, @nazwaKlubu varchar(30), @zawodnik int
+select @tor = idtoru - 2 from tor where dlugosc=25
+select @ilu = count(IdZawodnika) from trening where idtoru=@tor
+select @nazwaKlubu = nazwa from klub where nazwa = 'ORKA'
+select @zawodnik = idzawodnika from trening where idtoru = @tor
+print 'Tor nr ' + str(@tor) + ' ilosc osob: ' + str(@ilu)
+if @ilu > 2
+	begin
+	update Tor set iloscOsob=(@ilu - 1) where idtoru=@tor
+	delete from trening where idzawodnika = @zawodnik
+	print 'Usunięto zawodnika z toru'
+end
+else if @ilu < 2
+	begin
+	INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu) values ((select count (*) from zawodnik) + 1, 'Mikolaj', 'Koziatek', 'Mezczyzna', (select idklubu from klub where nazwa=@nazwaKlubu))
+	INSERT INTO Trening (IdToru, DataOd, IdZawodnika) VALUES (@tor, '2016-05-04', (select count (*) from zawodnik));
+	update Tor set iloscOsob=(@ilu + 1) where idtoru=@tor
+	print 'Dodano zawodnika na tor'
+end
+else
+	begin
+	print 'Na torze pływadwóch zawoników'
+end
+select @tor = idtoru - 1 from tor where dlugosc=25
+select @ilu = count(IdZawodnika) from trening where idtoru=@tor
+select @zawodnik = idzawodnika from trening where idtoru = @tor
+print 'Tor nr ' + str(@tor) + ' ilosc osob: ' + str(@ilu)
+if @ilu > 2
+	begin
+	update Tor set iloscOsob=(@ilu - 1) where idtoru=@tor
+	delete from trening where idzawodnika = @zawodnik
+	print 'Usunięto zawodnika z toru'
+end
+else if @ilu < 2
+	begin
+	INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu) values ((select count (*) from zawodnik) + 1, 'Mikolaj', 'Koziatek', 'Mezczyzna', (select idklubu from klub where nazwa=@nazwaKlubu))
+	INSERT INTO Trening (IdToru, DataOd, IdZawodnika) VALUES (@tor, '2016-05-04', (select count (*) from zawodnik));
+	update Tor set iloscOsob=(@ilu + 1) where idtoru=@tor
+	print 'Dodano zawodnika na tor'
+end
+else
+	begin
+	print 'Na torze pływadwóch zawoników'
+end
+select @tor = idtoru from tor where dlugosc=25
+select @ilu = count(IdZawodnika) from trening where idtoru=@tor
+select @zawodnik = idzawodnika from trening where idtoru = @tor
+print 'Tor nr ' + str(@tor) + ' ilosc osob: ' + str(@ilu)
+if @ilu > 2
+	begin
+	update Tor set iloscOsob=(@ilu - 1) where idtoru=@tor
+	delete from trening where idzawodnika = @zawodnik
+	print 'Usunięto zawodnika z toru'
+end
+else if @ilu < 2
+	begin
+	INSERT INTO Zawodnik (IdZawodnika, Imie, Nazwisko, Plec, IdKlubu) values ((select count (*) from zawodnik) + 1, 'Mikolaj', 'Koziatek', 'Mezczyzna', (select idklubu from klub where nazwa=@nazwaKlubu))
+	INSERT INTO Trening (IdToru, DataOd, IdZawodnika) VALUES (@tor, '2016-05-04', (select count (*) from zawodnik));
+	update Tor set iloscOsob=(@ilu + 1) where idtoru=@tor
+	print 'Dodano zawodnika na tor'
+end
+else
+	begin
+	print 'Na torze pływadwóch zawoników'
+end
+
+
+--1 wyzwalacz. Wyzwalacz który blokuje usuwanie nazw klubów ale jest możliwość dodanie nowcyh
+create trigger modyfikacjaKlub
+on klub
+for update
+as
+update klub set nazwa = deleted.nazwa
+from inserted, deleted
+where klub.nazwa = inserted.nazwa and klub.nazwa = deleted.nazwa
+
+INSERT INTO Klub (IdKlubu, Nazwa)
+VALUES (1, 'Orka');
+delete from Klub where idklubu = 1
+select nazwa
+from klub
+
+--2 wyzwalacz. Wyzwalacz, który nie pozwoli na zmiane nazwiska zawodnika oraz dodanie zawodnika o takim samym nazwisku
+go
+CREATE TRIGGER ZawodnicyBlok ON zawodnik FOR delete, UPDATE, INSERT
+AS 
+DECLARE @delrows INT, @idzawodnika INT, @nazwisko VARCHAR(10), @nazwisko_po VARCHAR(10)
+DECLARE Kursor CURSOR FOR SELECT idzawodnika, nazwisko FROM zawodnik
+SELECT @delrows = count(*) FROM deleted
+OPEN Kursor
+FETCH NEXT FROM Kursor INTO @idzawodnika, @nazwisko
+IF @delrows > 0 BEGIN
+    WHILE @@FETCH_STATUS = 0 BEGIN
+        SELECT @nazwisko_po = nazwisko FROM deleted where idzawodnika = @idzawodnika
+        IF @nazwisko != @nazwisko_po BEGIN
+            UPDATE zawodnik SET nazwisko = @nazwisko_po WHERE idzawodnika = @idzawodnika
+            PRINT 'Proba zmiany nazwiska zawodnika wycofana'
+        END
+        FETCH NEXT FROM Kursor INTO @idzawodnika, @nazwisko
+    END    
+END ELSE BEGIN --INSERT
+    WHILE @@FETCH_STATUS = 0 BEGIN
+        SELECT @nazwisko_po = nazwisko FROM inserted WHERE idzawodnika = @idzawodnika
+        IF @nazwisko = @nazwisko_po BEGIN
+            DELETE FROM zawodnik WHERE idzawodnika = @idzawodnika
+            PRINT 'Proba wstawienia zawodników o tym samym nazwisku wycofana'
+        END
+        FETCH NEXT FROM Kursor INTO @idzawodnika, @nazwisko
+    END
+END
+CLOSE Kursor
+DEALLOCATE Kursor
